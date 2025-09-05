@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scan Surprise</title>
+  <style>
+    body {
+      margin: 0;
+      background: #f9f4ef;
+      height: 100vh;
+      font-family: 'Brush Script MT', cursive;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Image in the middle */
+    .middle-img {
+      width: 250px;
+      height: auto;
+      margin-bottom: 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Purple gradient text */
+    .purple-text {
+      font-size: 36px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #9b59b6, #8e44ad, #732d91);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      margin-bottom: 50px;
+    }
+
+    /* Continue button */
+    .continue-btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: linear-gradient(90deg, #8E44AD, #9B59B6);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, opacity 0.3s ease;
+    }
+
+    .continue-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Middle Picture -->
+  <img src="spotify.jpeg" alt="Surprise" class="middle-img">
+
+  <!-- Purple Line Text -->
+  <div class="purple-text">Scan to see what I feel for you ❤</div>
+
+  <!-- Continue Button -->
+  <button class="continue-btn" onclick="window.location.href='hahahu.html'">
+    Continue →
+  </button>
+
+</body>
+</html>
