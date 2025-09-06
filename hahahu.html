@@ -3,223 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balloon Pop</title>
+  <title>Untold Memories</title>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
       background: #f9f4ef;
-      height: 100vh;
+      color: #5a4a3b;
+    }
+    h1 {
+      text-align: center;
       font-family: 'Dancing Script', cursive;
-      overflow: hidden;
+      font-size: 3rem;
+      color: #6a4e93;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      margin-top: 40px;
+      animation: fadeInDown 1.5s ease;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 20px;
+      gap: 40px;
+    }
+    .text-section {
+      flex: 1;
+      min-width: 300px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      animation: fadeInLeft 1.5s ease;
+    }
+    .image-section {
+      flex: 1;
       display: flex;
       justify-content: center;
-      align-items: center;
-      user-select: none;
+      animation: fadeInRight 1.5s ease;
     }
-
-    .top-title {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      font-size: 48px;
-      font-weight: 900;
-      font-family: 'Brush Script MT', cursive;
-      letter-spacing: 3px;
-      background: linear-gradient(90deg, #9b59b6, #8e44ad, #732d91);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    .polaroid {
+      background: white;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transform: rotate(-3deg);
+      transition: transform 0.4s ease;
     }
-
-    .balloon {
-      position: absolute;
-      bottom: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 130px;
-      height: 160px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 30px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s ease, opacity 0.3s ease;
+    .polaroid img {
+      max-width: 100%;
+      height: auto;
+      display: block;
     }
-    .balloon:after {
-      content: '';
-      position: absolute;
-      bottom: -40px;
-      width: 2px;
-      height: 40px;
-      background: #555;
+    .polaroid:hover {
+      transform: scale(1.05) rotate(0deg);
     }
-    .float-up {
-      animation: rise 1s ease-out forwards;
-    }
-    @keyframes rise {
-      0% { bottom: -200px; }
-      70% { bottom: 55%; }
-      85% { bottom: 48%; }
-      100% { bottom: 50%; }
-    }
-    .pop {
-      transform: scale(1.3);
-      opacity: 0;
-    }
-
-    .message-box {
-      position: absolute;
-      font-size: 24px;
-      color: #5a4635;
-      background: #f5f0e1;
-      padding: 15px 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-    .message-box.show { opacity: 1; }
-
-    .end-sequence {
-      position: absolute;
-      text-align: center;
-      opacity: 0;
-      font-weight: 900;
-      font-family: 'Brush Script MT', cursive;
-      letter-spacing: 3px;
-      background: linear-gradient(90deg, #9b59b6, #8e44ad, #732d91);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
-      transition: opacity 0.8s ease;
-    }
-    .end-sequence.show { opacity: 1; }
-
-    .end-happy { font-size: 60px; top: 30%; }
-    .end-25th { font-size: 58px; top: 38%; }
-    .end-birthday { font-size: 55px; top: 46%; }
-    .end-name { font-size: 52px; top: 54%; }
-    .end-heart { font-size: 60px; top: 63%; color: #E63946; }
-
     .continue-btn {
-      position: absolute;
-      top: 75%;
-      padding: 15px 30px;
-      font-size: 18px;
-      background: linear-gradient(90deg, #8E44AD, #9B59B6);
+      display: block;
+      margin: 40px auto;
+      padding: 12px 30px;
+      background: #6a4e93;
       color: white;
       border: none;
+      font-size: 1.2rem;
       border-radius: 30px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      opacity: 0;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease, opacity 0.8s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.3s ease;
     }
-    .continue-btn:hover { transform: scale(1.05); }
-    .continue-btn.show { opacity: 1; }
+    .continue-btn:hover {
+      background: #533b75;
+      transform: translateY(-3px);
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        text-align: center;
+      }
+      .text-section, .image-section {
+        animation: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="top-title">POP FOR SURPRISE</div>
-  <div id="message" class="message-box"></div>
+  <h1>UNTOLD MEMORIES</h1>
+  <div class="container">
+    <div class="text-section">
+      <p><em>Wo bhi waqt tha</em></p>
+      <p><em>Mein dar badar</em></p>
+      <p><em>Apko dhundhta tha</em></p>
+    </div>
 
-  <!-- End Text -->
-  <div id="happy" class="end-sequence end-happy">HAPPY</div>
-  <div id="twentyfive" class="end-sequence end-25th">25TH</div>
-  <div id="birthday" class="end-sequence end-birthday">BIRTHDAY</div>
-  <div id="name" class="end-sequence end-name">NAILLA</div>
-  <div id="heart" class="end-sequence end-heart">❤</div>
+    <div class="image-section">
+      <div class="polaroid">
+        <img src="refpic1" alt="Memory">
+      </div>
+    </div>
+  </div>
 
-  <button id="continueBtn" class="continue-btn" onclick="window.location.href='polaroids1.html'">
+  <button class="continue-btn" onclick="window.location.href='polaroids2.html'">
     Continue →
   </button>
 
-  <script>
-    const messageBox = document.getElementById('message');
-    const happy = document.getElementById('happy');
-    const twentyfive = document.getElementById('twentyfive');
-    const birthday = document.getElementById('birthday');
-    const name = document.getElementById('name');
-    const heart = document.getElementById('heart');
-    const continueBtn = document.getElementById('continueBtn');
-
-    const colors = ['#FF3B3B','#3B83FF','#4BC04B','#FFD133','#FF69B4','#9966FF','#FF7F50','#6A5ACD'];
-    const messages = [
-      "Special missed birthdays wish 🎈",
-      "Happy 1st Birthday, Nailla 🎉",
-      "Happy 2nd Birthday, Nailla 🎉",
-      "Happy 3rd Birthday, Nailla 🎉",
-      "Happy 4th Birthday, Nailla 🎉",
-      "Happy 5th Birthday, Nailla 🎉",
-      "Happy 6th Birthday, Nailla 🎉",
-      "Happy 7th Birthday, Nailla 🎉",
-      "Happy 8th Birthday, Nailla 🎉",
-      "Happy 9th Birthday, Nailla 🎉",
-      "Happy 10th Birthday, Nailla 🎉",
-      "Happy 11th Birthday, Nailla 🎉",
-      "Happy 12th Birthday, Nailla 🎉",
-      "Happy 13th Birthday, Nailla 🎉",
-      "Happy 14th Birthday, Nailla 🎉",
-      "Happy 15th Birthday, Nailla 🎉",
-      "Happy 16th Birthday, Nailla 🎉",
-      "Happy 17th Birthday, Nailla 🎉",
-      "Happy 18th Birthday, Nailla 🎉",
-      "Happy 19th Birthday, Nailla 🎉",
-      "Happy 20th Birthday, Nailla 🎉",
-      "Happy 21st Birthday, Nailla 🎉",
-      "Happy 22nd Birthday, Nailla 🎉",
-      "Happy 23rd Birthday, Nailla 🎉",
-      "Happy 24th Birthday, Nailla 🎉"
-    ];
-
-    let currentIndex = 0;
-
-    function showBalloon() {
-      if (currentIndex >= 24) {
-        showEndSequence();
-        return;
-      }
-
-      const balloon = document.createElement('div');
-      balloon.className = 'balloon float-up';
-      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-      balloon.textContent = currentIndex + 1;
-      document.body.appendChild(balloon);
-
-      balloon.addEventListener('click', () => {
-        balloon.classList.add('pop');
-        messageBox.style.left = (window.innerWidth/2 + 80) + 'px';
-        messageBox.style.top = (window.innerHeight/2 - 50) + 'px';
-        messageBox.textContent = messages[currentIndex];
-        messageBox.classList.add('show');
-
-        setTimeout(() => {
-          messageBox.classList.remove('show');
-          balloon.remove();
-          currentIndex++;
-          showBalloon();
-        }, 1000);
-      });
-    }
-
-    function showEndSequence(){
-      setTimeout(()=> happy.classList.add('show'), 200);
-      setTimeout(()=> twentyfive.classList.add('show'), 700);
-      setTimeout(()=> birthday.classList.add('show'), 1200);
-      setTimeout(()=> name.classList.add('show'), 1700);
-      setTimeout(()=> heart.classList.add('show'), 2200);
-      setTimeout(()=> continueBtn.classList.add('show'), 3000);
-    }
-
-    showBalloon();
-  </script>
 </body>
 </html>
