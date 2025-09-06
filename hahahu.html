@@ -17,7 +17,6 @@
       user-select: none;
     }
 
-    /* Top Title (changed to WELCOME style) */
     .top-title {
       position: absolute;
       top: 20px;
@@ -33,7 +32,6 @@
       text-shadow: 0 3px 5px rgba(0,0,0,0.2);
     }
 
-    /* Balloon styling */
     .balloon {
       position: absolute;
       bottom: -200px;
@@ -73,7 +71,6 @@
       opacity: 0;
     }
 
-    /* Message box */
     .message-box {
       position: absolute;
       font-size: 24px;
@@ -87,7 +84,6 @@
     }
     .message-box.show { opacity: 1; }
 
-    /* End text (changed to WELCOME style) */
     .end-sequence {
       position: absolute;
       text-align: center;
@@ -109,7 +105,6 @@
     .end-name { font-size: 52px; top: 54%; }
     .end-heart { font-size: 60px; top: 63%; color: #E63946; }
 
-    /* Continue Button */
     .continue-btn {
       position: absolute;
       top: 75%;
@@ -129,17 +124,14 @@
     }
     .continue-btn:hover { transform: scale(1.05); }
     .continue-btn.show { opacity: 1; }
-
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
   <div class="top-title">POP FOR SURPRISE</div>
-  <div id="balloon" class="balloon"></div>
   <div id="message" class="message-box"></div>
 
-  <!-- End Text Sequence -->
+  <!-- End Text -->
   <div id="happy" class="end-sequence end-happy">HAPPY</div>
   <div id="twentyfive" class="end-sequence end-25th">25TH</div>
   <div id="birthday" class="end-sequence end-birthday">BIRTHDAY</div>
@@ -151,7 +143,6 @@
   </button>
 
   <script>
-    const balloon = document.getElementById('balloon');
     const messageBox = document.getElementById('message');
     const happy = document.getElementById('happy');
     const twentyfive = document.getElementById('twentyfive');
@@ -162,65 +153,64 @@
 
     const colors = ['#FF3B3B','#3B83FF','#4BC04B','#FFD133','#FF69B4','#9966FF','#FF7F50','#6A5ACD'];
     const messages = [
-      "Special missed birthdays wish 🎈", // 1st balloon
-      "Happy 1st Birthday, Nailla 🎉",   // 2nd
-      "Happy 2nd Birthday, Nailla 🎉",   // 3rd
-      "Happy 3rd Birthday, Nailla 🎉",   // 4th
-      "Happy 4th Birthday, Nailla 🎉",   // 5th
-      "Happy 5th Birthday, Nailla 🎉",   // 6th
-      "Happy 6th Birthday, Nailla 🎉",   // 7th
-      "Happy 7th Birthday, Nailla 🎉",   // 8th
-      "Happy 8th Birthday, Nailla 🎉",   // 9th
-      "Happy 9th Birthday, Nailla 🎉",   // 10th
-      "Happy 10th Birthday, Nailla 🎉",  // 11th
-      "Happy 11th Birthday, Nailla 🎉",  // 12th
-      "Happy 12th Birthday, Nailla 🎉",  // 13th
-      "Happy 13th Birthday, Nailla 🎉",  // 14th
-      "Happy 14th Birthday, Nailla 🎉",  // 15th
-      "Happy 15th Birthday, Nailla 🎉",  // 16th
-      "Happy 16th Birthday, Nailla 🎉",  // 17th
-      "Happy 17th Birthday, Nailla 🎉",  // 18th
-      "Happy 18th Birthday, Nailla 🎉",  // 19th
-      "Happy 19th Birthday, Nailla 🎉",  // 20th
-      "Happy 20th Birthday, Nailla 🎉",  // 21st
-      "Happy 21st Birthday, Nailla 🎉",  // 22nd
-      "Happy 22nd Birthday, Nailla 🎉",  // 23rd
-      "Happy 23rd Birthday, Nailla 🎉",  // 24th
+      "Special missed birthdays wish 🎈",
+      "Happy 1st Birthday, Nailla 🎉",
+      "Happy 2nd Birthday, Nailla 🎉",
+      "Happy 3rd Birthday, Nailla 🎉",
+      "Happy 4th Birthday, Nailla 🎉",
+      "Happy 5th Birthday, Nailla 🎉",
+      "Happy 6th Birthday, Nailla 🎉",
+      "Happy 7th Birthday, Nailla 🎉",
+      "Happy 8th Birthday, Nailla 🎉",
+      "Happy 9th Birthday, Nailla 🎉",
+      "Happy 10th Birthday, Nailla 🎉",
+      "Happy 11th Birthday, Nailla 🎉",
+      "Happy 12th Birthday, Nailla 🎉",
+      "Happy 13th Birthday, Nailla 🎉",
+      "Happy 14th Birthday, Nailla 🎉",
+      "Happy 15th Birthday, Nailla 🎉",
+      "Happy 16th Birthday, Nailla 🎉",
+      "Happy 17th Birthday, Nailla 🎉",
+      "Happy 18th Birthday, Nailla 🎉",
+      "Happy 19th Birthday, Nailla 🎉",
+      "Happy 20th Birthday, Nailla 🎉",
+      "Happy 21st Birthday, Nailla 🎉",
+      "Happy 22nd Birthday, Nailla 🎉",
+      "Happy 23rd Birthday, Nailla 🎉",
+      "Happy 24th Birthday, Nailla 🎉"
     ];
 
     let currentIndex = 0;
 
     function showBalloon() {
-      if (currentIndex >= 24) { 
-        showEndSequence(); 
-        return; 
+      if (currentIndex >= 24) {
+        showEndSequence();
+        return;
       }
-      balloon.style.display = 'flex';
-      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
-      balloon.textContent = currentIndex+1;
 
-      balloon.style.bottom = '-200px';
-      balloon.classList.remove('float-up');
-      void balloon.offsetWidth; // force reflow
-      balloon.classList.add('float-up');
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon float-up';
+      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+      balloon.textContent = currentIndex + 1;
+      document.body.appendChild(balloon);
+
+      balloon.addEventListener('click', () => {
+        balloon.classList.add('pop');
+        messageBox.style.left = (window.innerWidth/2 + 80) + 'px';
+        messageBox.style.top = (window.innerHeight/2 - 50) + 'px';
+        messageBox.textContent = messages[currentIndex];
+        messageBox.classList.add('show');
+
+        setTimeout(() => {
+          messageBox.classList.remove('show');
+          balloon.remove();
+          currentIndex++;
+          showBalloon();
+        }, 1000);
+      });
     }
 
-    balloon.addEventListener('click', () => {
-      balloon.classList.add('pop');
-      messageBox.style.left = (window.innerWidth/2 + 80) + 'px';
-      messageBox.style.top = (window.innerHeight/2 - 50) + 'px';
-      messageBox.textContent = messages[currentIndex];
-      messageBox.classList.add('show');
-      setTimeout(() => {
-        messageBox.classList.remove('show');
-        balloon.classList.remove('pop');
-        currentIndex++;
-        showBalloon();
-      }, 1000);
-    });
-
     function showEndSequence(){
-      balloon.style.display = 'none'; // Balloon hide after 24 pops
       setTimeout(()=> happy.classList.add('show'), 200);
       setTimeout(()=> twentyfive.classList.add('show'), 700);
       setTimeout(()=> birthday.classList.add('show'), 1200);
@@ -231,6 +221,5 @@
 
     showBalloon();
   </script>
-
 </body>
 </html>
