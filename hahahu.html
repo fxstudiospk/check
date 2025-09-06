@@ -3,231 +3,234 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Love Maze</title>
+  <title>Balloon Pop</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       background: #f9f4ef;
-      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      font-family: 'Dancing Script', cursive;
       overflow: hidden;
-    }
-    h2.instructions {
-      color: #6a4e93;
-      margin-bottom: 15px;
-      font-weight: 600;
-      text-align: center;
-    }
-    #maze {
-      position: relative;
-      width: 400px;
-      height: 400px;
-      background: #ffffff;
-      border: 5px solid #6a4e93;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
-    .wall {
-      position: absolute;
-      background: #6a4e93;
-    }
-    #player {
-      position: absolute;
-      font-size: 32px;
-      transition: left 0.1s linear, top 0.1s linear;
-      z-index: 5;
-    }
-    #goal {
-      position: absolute;
-      font-size: 34px;
-    }
-    #popup {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
       display: flex;
       justify-content: center;
       align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.5s ease;
-      z-index: 20;
+      user-select: none;
     }
-    #popup.active {
-      opacity: 1;
-      visibility: visible;
-    }
-    .popup-content {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 20px;
+
+    /* Top Title (changed to WELCOME style) */
+    .top-title {
+      position: absolute;
+      top: 20px;
+      width: 100%;
       text-align: center;
-      color: #2e1d47;
-      transform: scale(0.8);
-      animation: popIn 0.5s forwards;
+      font-size: 48px;
+      font-weight: 900;
+      font-family: 'Brush Script MT', cursive;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #9b59b6, #8e44ad, #732d91);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
     }
-    .popup-content h2 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
+
+    /* Balloon styling */
+    .balloon {
+      position: absolute;
+      bottom: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 160px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
-    .popup-content button {
-      background: #6a4e93;
+    .balloon:after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      width: 2px;
+      height: 40px;
+      background: #555;
+    }
+    .float-up {
+      animation: rise 1s ease-out forwards;
+    }
+    @keyframes rise {
+      0% { bottom: -200px; }
+      70% { bottom: 55%; }
+      85% { bottom: 48%; }
+      100% { bottom: 50%; }
+    }
+    .pop {
+      transform: scale(1.3);
+      opacity: 0;
+    }
+
+    /* Message box */
+    .message-box {
+      position: absolute;
+      font-size: 24px;
+      color: #5a4635;
+      background: #f5f0e1;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .message-box.show { opacity: 1; }
+
+    /* End text (changed to WELCOME style) */
+    .end-sequence {
+      position: absolute;
+      text-align: center;
+      opacity: 0;
+      font-weight: 900;
+      font-family: 'Brush Script MT', cursive;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, #9b59b6, #8e44ad, #732d91);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 3px 5px rgba(0,0,0,0.2);
+      transition: opacity 0.8s ease;
+    }
+    .end-sequence.show { opacity: 1; }
+
+    .end-happy { font-size: 60px; top: 30%; }
+    .end-25th { font-size: 58px; top: 38%; }
+    .end-birthday { font-size: 55px; top: 46%; }
+    .end-name { font-size: 52px; top: 54%; }
+    .end-heart { font-size: 60px; top: 63%; color: #E63946; }
+
+    /* Continue Button */
+    .continue-btn {
+      position: absolute;
+      top: 75%;
+      padding: 15px 30px;
+      font-size: 18px;
+      background: linear-gradient(90deg, #8E44AD, #9B59B6);
       color: white;
       border: none;
-      padding: 12px 30px;
-      font-size: 1.2rem;
       border-radius: 30px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: background 0.3s ease, transform 0.3s ease;
+      transition: transform 0.2s ease, opacity 0.8s ease;
     }
-    .popup-content button:hover {
-      background: #533b75;
-      transform: translateY(-3px);
-    }
-    @keyframes popIn {
-      from {transform: scale(0.8); opacity:0;}
-      to {transform: scale(1); opacity:1;}
-    }
+    .continue-btn:hover { transform: scale(1.05); }
+    .continue-btn.show { opacity: 1; }
+
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h2 class="instructions">Help the heart find its way — swipe, drag or use the arrows </h2>
-  <div id="maze">
-    <!-- Maze walls -->
-    <div class="wall" style="top: 80px; left: 0; width: 300px; height: 20px;"></div>
-    <div class="wall" style="top: 160px; left: 100px; width: 300px; height: 20px;"></div>
-    <div class="wall" style="top: 240px; left: 0; width: 300px; height: 20px;"></div>
 
-    <!-- Player & Goal -->
-    <div id="player" style="top: 10px; left: 10px;">❤️</div>
-    <div id="goal" style="bottom: 10px; right: 10px;">💖</div>
-  </div>
+  <div class="top-title">POP FOR SURPRISE</div>
+  <div id="balloon" class="balloon"></div>
+  <div id="message" class="message-box"></div>
 
-  <!-- Popup -->
-  <div id="popup">
-    <div class="popup-content">
-      <h2>Found my way to you ❤️</h2>
-      <button onclick="window.location.href='countdown.html'">Continue →</button>
-    </div>
-  </div>
+  <!-- End Text Sequence -->
+  <div id="happy" class="end-sequence end-happy">HAPPY</div>
+  <div id="twentyfive" class="end-sequence end-25th">25TH</div>
+  <div id="birthday" class="end-sequence end-birthday">BIRTHDAY</div>
+  <div id="name" class="end-sequence end-name">NAILLA</div>
+  <div id="heart" class="end-sequence end-heart">❤</div>
 
-<script>
-  const player = document.getElementById("player");
-  const goal = document.getElementById("goal");
-  const popup = document.getElementById("popup");
-  const walls = document.querySelectorAll(".wall");
+  <button id="continueBtn" class="continue-btn" onclick="window.location.href='polaroids1.html'">
+    Continue →
+  </button>
 
-  let playerPos = { top: 10, left: 10 };
-  const step = 20;
+  <script>
+    const balloon = document.getElementById('balloon');
+    const messageBox = document.getElementById('message');
+    const happy = document.getElementById('happy');
+    const twentyfive = document.getElementById('twentyfive');
+    const birthday = document.getElementById('birthday');
+    const name = document.getElementById('name');
+    const heart = document.getElementById('heart');
+    const continueBtn = document.getElementById('continueBtn');
 
-  // ---- Movement common function ----
-  function movePlayer(key) {
-    let newTop = playerPos.top;
-    let newLeft = playerPos.left;
+    const colors = ['#FF3B3B','#3B83FF','#4BC04B','#FFD133','#FF69B4','#9966FF','#FF7F50','#6A5ACD'];
+    const messages = [
+      "Special missed birthdays wish 🎈", // 1st balloon
+      "Happy 1st Birthday, Nailla 🎉",   // 2nd
+      "Happy 2nd Birthday, Nailla 🎉",   // 3rd
+      "Happy 3rd Birthday, Nailla 🎉",   // 4th
+      "Happy 4th Birthday, Nailla 🎉",   // 5th
+      "Happy 5th Birthday, Nailla 🎉",   // 6th
+      "Happy 6th Birthday, Nailla 🎉",   // 7th
+      "Happy 7th Birthday, Nailla 🎉",   // 8th
+      "Happy 8th Birthday, Nailla 🎉",   // 9th
+      "Happy 9th Birthday, Nailla 🎉",   // 10th
+      "Happy 10th Birthday, Nailla 🎉",  // 11th
+      "Happy 11th Birthday, Nailla 🎉",  // 12th
+      "Happy 12th Birthday, Nailla 🎉",  // 13th
+      "Happy 13th Birthday, Nailla 🎉",  // 14th
+      "Happy 14th Birthday, Nailla 🎉",  // 15th
+      "Happy 15th Birthday, Nailla 🎉",  // 16th
+      "Happy 16th Birthday, Nailla 🎉",  // 17th
+      "Happy 17th Birthday, Nailla 🎉",  // 18th
+      "Happy 18th Birthday, Nailla 🎉",  // 19th
+      "Happy 19th Birthday, Nailla 🎉",  // 20th
+      "Happy 20th Birthday, Nailla 🎉",  // 21st
+      "Happy 21st Birthday, Nailla 🎉",  // 22nd
+      "Happy 22nd Birthday, Nailla 🎉",  // 23rd
+      "Happy 23rd Birthday, Nailla 🎉",  // 24th
+    ];
 
-    if (key === "ArrowUp") newTop -= step;
-    if (key === "ArrowDown") newTop += step;
-    if (key === "ArrowLeft") newLeft -= step;
-    if (key === "ArrowRight") newLeft += step;
+    let currentIndex = 0;
 
-    // collision detection
-    let playerRect = { top: newTop, left: newLeft, width: 28, height: 28 };
-    let collides = false;
-    walls.forEach(w => {
-      const wallRect = w.getBoundingClientRect();
-      const mazeRect = w.parentNode.getBoundingClientRect();
-      const wall = {
-        top: wallRect.top - mazeRect.top,
-        left: wallRect.left - mazeRect.left,
-        width: wallRect.width,
-        height: wallRect.height
-      };
-      if (
-        playerRect.left < wall.left + wall.width &&
-        playerRect.left + playerRect.width > wall.left &&
-        playerRect.top < wall.top + wall.height &&
-        playerRect.top + playerRect.height > wall.top
-      ) {
-        collides = true;
+    function showBalloon() {
+      if (currentIndex >= 24) { 
+        showEndSequence(); 
+        return; 
       }
+      balloon.style.display = 'flex';
+      balloon.style.background = colors[Math.floor(Math.random() * colors.length)];
+      balloon.textContent = currentIndex+1;
+
+      balloon.style.bottom = '-200px';
+      balloon.classList.remove('float-up');
+      void balloon.offsetWidth; // force reflow
+      balloon.classList.add('float-up');
+    }
+
+    balloon.addEventListener('click', () => {
+      balloon.classList.add('pop');
+      messageBox.style.left = (window.innerWidth/2 + 80) + 'px';
+      messageBox.style.top = (window.innerHeight/2 - 50) + 'px';
+      messageBox.textContent = messages[currentIndex];
+      messageBox.classList.add('show');
+      setTimeout(() => {
+        messageBox.classList.remove('show');
+        balloon.classList.remove('pop');
+        currentIndex++;
+        showBalloon();
+      }, 1000);
     });
 
-    if (!collides && newTop >= 0 && newLeft >= 0 &&
-        newTop <= 400 - 28 && newLeft <= 400 - 28) {
-      playerPos = { top: newTop, left: newLeft };
-      player.style.top = playerPos.top + "px";
-      player.style.left = playerPos.left + "px";
+    function showEndSequence(){
+      balloon.style.display = 'none'; // Balloon hide after 24 pops
+      setTimeout(()=> happy.classList.add('show'), 200);
+      setTimeout(()=> twentyfive.classList.add('show'), 700);
+      setTimeout(()=> birthday.classList.add('show'), 1200);
+      setTimeout(()=> name.classList.add('show'), 1700);
+      setTimeout(()=> heart.classList.add('show'), 2200);
+      setTimeout(()=> continueBtn.classList.add('show'), 3000);
     }
 
-    // goal check
-    const goalRect = goal.getBoundingClientRect();
-    const mazeRect = goal.parentNode.getBoundingClientRect();
-    const gx = goalRect.left - mazeRect.left;
-    const gy = goalRect.top - mazeRect.top;
-    const gw = goalRect.width, gh = goalRect.height;
+    showBalloon();
+  </script>
 
-    if (
-      playerPos.left < gx + gw &&
-      playerPos.left + 28 > gx &&
-      playerPos.top < gy + gh &&
-      playerPos.top + 28 > gy
-    ) {
-      popup.classList.add("active");
-    }
-  }
-
-  // ---- Arrow keys ----
-  document.addEventListener("keydown", (e) => {
-    if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].includes(e.key)) {
-      movePlayer(e.key);
-    }
-  });
-
-  // ---- Touch Swipe ----
-  let touchStartX = 0, touchStartY = 0;
-  document.addEventListener("touchstart", (e) => {
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
-  });
-  document.addEventListener("touchend", (e) => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 30) movePlayer("ArrowRight");
-      else if (dx < -30) movePlayer("ArrowLeft");
-    } else {
-      if (dy > 30) movePlayer("ArrowDown");
-      else if (dy < -30) movePlayer("ArrowUp");
-    }
-  });
-
-  // ---- Mouse Drag (Touchscreen laptop) ----
-  let isDragging = false;
-  let startX = 0, startY = 0;
-  document.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-  });
-  document.addEventListener("mouseup", (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    if (Math.abs(dx) > Math.abs(dy)) {
-      if (dx > 30) movePlayer("ArrowRight");
-      else if (dx < -30) movePlayer("ArrowLeft");
-    } else {
-      if (dy > 30) movePlayer("ArrowDown");
-      else if (dy < -30) movePlayer("ArrowUp");
-    }
-  });
-</script>
 </body>
 </html>
